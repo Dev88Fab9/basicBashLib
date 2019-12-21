@@ -1,188 +1,381 @@
 #!/bin/bash
 
+#
+#Library containing common string functions 
+#mimicking basic/vbscripts naming
+#
+#Version: 0.5 
+#Author: Fabrizio Pani
+#License: GPL v2
+#Dec. 2019
 
-#Logic of exit codes
+##########################Logic of exit codes####################
+#0: success
 #1: general error code
 #2: usage error
 #5: permission denied
 #127: command not found
 #130: CTRL+C was invoked
+#
+################################################################
+########################Logic of global variables###############
+#we will use the below global vars
+#and reset them at each function call
+#the caller might optionally reset them
+#
+#set_val        : returned value from a function
+#a_set_val    : returned array of values set from a function
+#err	        	: contains the last error code
+#             		: ( 0 means the operation is successful )
+#err_msg      : contains the last error message
+###############################################################
 
+reset_global_vars(){
 
-#to avoid remembering each specific variable
-#returned by each function
-#we will return the unique global variable
-#ret_string
-#it is set to blank at each call to avoid any clash
+	
+	 : 'BEGIN COMMENT
+	 """
+			Resets global variables
+			Args: N/A
+			Local vars: N/A
+			Global vars: a_set_val, set_val, err, err_msg
+			Exit codes: N/A
+	"""
+	END COMMENT'
 
-ret_string=""
+	a_set_val=()
+	set_val=""
+	err=0
+	err_msg=""
 
+}
 
 Len(){
 
- : 'BEGIN COMMENT
- """
- 		Get the length of a passed string
-		and save it in the variable strlen
+	 : 'BEGIN COMMENT
+	 """
+			Returns the length of a passed string
+			Args: one string
+			Local vars: str
+			Global vars: set_val, err, err_msg
+			Exit codes:
+				0: SUCCESS
+				1: GENERIC FAILURE
+				2: FAILURE (wrong usage)
+	"""
+	END COMMENT'
 
-		Argument: one string
-		Local var.: str_org, str
-		Global var.: strlen
-		Returns:
-			0: SUCCESS
-			1: FAILURE
-"""
-END COMMENT'
 
-  local str_org=""
-  local str=""
-	str_org="${1}"
+	reset_global_vars
 
-	if [[ -z "${str_org}" ]]; then
-		echo "No input string provided"
-		return 1
-	else
-    #we might have a null character
-    #to avoid the function will stop to count
-    #after displaying a warning message
-    #we replace any NULL with simply a 0
-    str=$(echo -n "${str_org}"|tr -s '\000' '0')
-   	strlen=$(echo -n "${str}"|wc -m)
-   	return 0
+	if [[ -z "${1+x}" ]];then
+	  err=2
+	  err_msg="Len: no input provided"
+	  return $err
 	fi
+	if ! command -v wc >/dev/null 2>&1; then
+	   err_msg="Len - 'wc' : command not found"
+	   err=127
+	   return $err
+	fi
+
+	local str="${1}"
+
+	  #Notes:
+	  #a NULL character is not counted
+	  #in case of UNICODE character
+	  #the number of characters are returned
+	  #NOT the number of bytes
+
+	  set_val=$(echo -n "${str}"|wc -m)
+	  if [[ $? -ne 0 ]]; then
+		set_val=""
+		err=1
+		err_msg="Len: an error has occured."
+	  fi
+
+	return $err
 
 }
 
 Trim(){
-: 'BEGIN COMMENT
- """
-                Remove any whitespace at the end and at the beginning of a string
-                Argument: one string
-                Local var.: str
-                Global var.: trimmedi_str
-                Returns:
-                        0: SUCCESS
-                        1: FAILURE
-"""
-END COMMENT'
 
-	local str=""
-  trimmed_str=""
-  str="${1}"
+	: 'BEGIN COMMENT
+	"""
+				Removes any whitespace at the end and at the beginning of a string
+				Args: one string
+				Local vars: str
+				Global vars: set_val,err,err_msg
+				Exit codes:
+						0: SUCCESS
+						1: GENERIC FAILURE
+						2: FAILURE (wrong usage)
+	"""
+	END COMMENT'
+	
+	reset_global_vars
 
-  if [[ -z "${str}" ]]; then
-		echo "No input string provided."
-		return 1
-  else
-	   trimmed_str=$(echo "${str}"|xargs)
-     if [[ $? -eq 0 ]]; then
-	      return 0
-     else
-        trimmed_str=""
-        return 1
-	   fi
-  fi
+	if [[ -z "${1+x}" ]]; then
+		err=2
+		err_msg="Trim: no input provided"
+		return $err
+	fi
+
+	local str="${1}"
+	
+	set_val=$(echo "${str}"|xargs)
+	if [[ $? -ne 0 ]]; then
+		set_val=""
+		err=1
+		err_msg="Trim: an error has occured"
+	fi
+
+	return $err
+
 }
 
 RTrim(){
 
-  : 'BEGIN COMMENT
-   """
-                  Remove any whitespace at the end of a string
-                  Argument: one string
-                  Local var.: str
-                  Global var.: rtrimmed_str
-                  Returns:
-                          0: SUCCESS
-                          1: FAILURE
-  """
-  COMMENT'
+	  : 'BEGIN COMMENT
+	   """
+					  Removes any whitespace at the end of a string
+					  Args: one string
+					  Local vars: str
+					  Global vars: set_val,err,err_msg
+					  Exit codes:
+							  0: SUCCESS
+							  1: GENERIC FAILURE
+							  2: FAILURE (wrong usage)
+
+	  """
+	  COMMENT'
+	  
+	  reset_global_vars
+	  
+	  if [[ -z "${1+x}" ]];then
+		err=2
+		err_msg="RTrim: no input provided"
+		return $err
+	  fi
+
+	local str="${1}"
 
 
-  	local str=""
-    rtrimmed_str=""
-    str="${1}"
+		set_val="${str%%*()}"
+		if [[ $? -ne 0 ]]; then
+			  err_msg="RTrim: an error has occured"
+			err=1
+		fi
 
-
-    if [[ -z "${str}" ]]; then
-      echo "No input string provided."
-      return 1
-    else
-      rtrimmed_str="${str%%*()}"
-    fi
+		return $err
 
 }
 
 
 LTrim(){
 
-    : 'BEGIN COMMENT
-     """
-                    Remove any whitespace at the beginning of a string
-                    Argument: one string
-                    Local var.: str
-                    Global var.: ltrimmed_str
-                    Returns:
-                            0: SUCCESS
-                            1: FAILURE
-    """
-    COMMENT'
+		: 'BEGIN COMMENT
+		 """
+						Removes any whitespace at the beginning of a string
+						Argument: one string
+						Local var.: str
+						Global var.: set_val,err,err_msg
+						Exit codes:
+								0: SUCCESS
+								1: GENERIC FAILURE
+								2: FAILURE (wrong usage)
+		"""
+		COMMENT'
+		
+		reset_global_vars
+		
+		if [[ -z "${1+x}" ]];then
+		  err=2
+		  err_msg="LTrim: no input provided"
+		  return $err
+		fi
+		local str="${1}"
+		
 
-    	local str=""
-      ltrimmed_str=""
-      str="${1}"
-
-
-      if [[ -z "${str}" ]]; then
-        echo "No input string provided."
-        return 1
-      else
-        ltrimmed_str="${str##*()}"
-        return 0
-      fi
+		set_val="${str##*()}"
+		if [[ $? -ne 0 ]]; then
+		  err_msg="LTrim: an error has occured"
+		  err=1
+		fi
+		return $err
 
   }
 
 
   Mid(){
 
-      : 'BEGIN COMMENT
-       """
-                      Return a substring from a string
-                      Argument: string,start,[length]
-                      Local var.: str
-                      Global var.: mid_str
-                      Returns:
-                              0: SUCCESS
-                              1: FAILURE
-      """
-      COMMENT'
+	: 'BEGIN COMMENT
+	"""
+				  Returns a substring from a string
+				  Args: string,start,[length]
+				  Local vars: str
+				  Global vars: mid_str
+				  Exit codes:
+						  0: SUCCESS
+						  1: GENERIC FAILURE
+						  2: FAILURE (WRONG USAGE)
+	"""
+	COMMENT'
 
-      	local str=""
-        local length=""
-        local start="0"
-        mid_str=""
-        str="${1}"
+	reset_global_vars
+	
+	if [[ -z "${1+x}" ]];then
+		err=2
+		err_msg="Mid: no string provided"
+		return $err
+	fi
+	
+	local length=""
+	local start="0"
+	local str="${1}"
+	
 
-        if [[ -z "${str}" ]]; then
-          echo "No input string provided."
-          return 1
-        fi
-        if [[ $# -lt 2 ]]; then
-          return 2
-        fi
-        start=$(echo "${2}"|tr -cd '[:digit:]')
-        if [[ -z "${start}" ]]; then
-           return 2
-        fi
-        if [ $# -eq 3 ]; then
-          length=$(echo "${3}"|tr -cd '[:digit:]')
-        fi
+	if [[ $# -lt 2 ]]; then
+		err_msg="mid: missing start parameter."
+		err=2
+		return $err
+	fi
 
-        if [[ ! -z $length ]]; then
-          mid_str="${str:$start:$length}"
-        else
-          mid_str="${str:$start}"
-        fi
-        return 0
+	start=$(echo "${2}"|tr -cd '[:digit:]')
+	if [[ -z "${start}" ]]; then
+	  err_msg="Mid: start parameter in the wrong format."
+	  err=2
+	  return $err
+	fi
+
+	length="${3}"
+	if [[ ! -z $length ]]; then
+		set_val="${str:$start:$length}"
+	else
+		set_val="${str:$start}"	
+	fi
+
+	if [[ $? -ne 0 ]]; then
+	  err_msg="Mid: an error has occured"
+	  set_val=""
+	  err=1
+	fi
+
+	return $err
+	
+}
+
+Split(){
+
+	: 'BEGIN COMMENT
+	"""
+			  Returns an array from a delimited string
+			  The default delimiter is the space
+			  Args: str, [delim]
+			  Local vars: str, delim
+			  Global vars: set_val
+			  Exit codes:
+					  0: SUCCESS
+					  1: GENERIC FAILURE
+					  2: FAILURE (WRONG USAGE)
+				  127: FAILURE (COMMAND NOT FOUND)
+	"""
+	COMMENT'
+
+	reset_global_vars
+	if [[ -z "${1+x}" ]];then
+		err=2
+		err_msg="Split: no string provided"
+		return $err
+	fi
+
+	local space=" "
+	local str="${1}"
+	local delim="${2:-${space}}"
+	#local str_REG="[,.:;\'\#~_+\"/\/\*?]"
+	local str_REG="[,.:;\'\#~_+\"/\/\*?\(\)]"
+	
+
+	#we will use grep instead of the bash =~ operator
+	#for portability and consistency
+	if ! command -v grep >/dev/null 2>&1; then
+		err_msg="Fatal: grep not found"
+		err=127
+		return $err
+	fi
+	if [[  $delim != "$space" ]]; then
+		if ! echo "$delim"|grep -q "$str_REG"; then
+			err_msg="Split: Invalid delimiter\nThe following must be escaped:\n, & # \\ * ( )"
+			err=2
+			return $err
+		fi
+	fi
+	
+	 Len "$delim"
+	 if [[ $set_val  -gt 1 ]]; then
+			 err_msg="Split: Invalid delimiter - it must be one character only"
+			 err=2
+			 return $err
+	 fi		
+	set_val=""
+	
+	OIFS=$IFS
+	IFS=$delim read -ra a_set_val <<< "$str"
+	IFS=$OIFS
+	if [[ $? -ne 0 ]]; then
+		set_val=""
+		a_set_val=()
+		err_msg="Split: an error has occured"
+		err=1
+	fi
+
+	return $err
+
+}
+
+
+Join(){
+
+	: 'BEGIN COMMENT
+	"""
+			  Returns a string from an array
+			  Args: array, [delim]
+			  Local vars.: array, delim
+			  Global vars: set_val
+			  Exit codes:
+					  0: SUCCESS
+					  1: FAILURE
+					  2: FAILURE (WRONG USAGE)
+				  127: FAILURE (COMMAND NOT FOUND)
+	"""
+	COMMENT'
+
+	reset_global_vars
+	if [[ -z "${1+x}" ]];then
+		err=2
+		err_msg="Join: no array provided"
+		return $err
+	fi
+	
+	local space=" "
+	local delim="${2:-${space}}"
+	local array0="$1[@]"
+	local array=("${!array0}")
+	local elem=""
+
+	 Len "$delim"
+	 if [[ $set_val  -gt 1 ]]; then
+			 err_msg="Join: Invalid delimiter - it must be one character only"
+			 err=2
+			 set_val=""
+			 return $err
+	 fi		
+	set_val=""
+	
+	for elem in "${array[@]}"; do
+		set_val="${set_val}${elem}${delim}"
+		done	
+	
+	return $err
+	
 }
