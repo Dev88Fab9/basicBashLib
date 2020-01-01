@@ -147,10 +147,6 @@ check_net_tools(){
 		is_ping=1
 		is_ss=1
 
-	if command -v nc >/dev/null 2>&1; then
-		is_nc=0
-	fi
-
 	if command -v nslookup >/dev/null 2>&1; then
 			is_nslookup=0
 	fi
