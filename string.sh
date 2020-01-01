@@ -1,55 +1,5 @@
 #!/bin/bash
 
-#
-#Library containing common string functions 
-#mimicking basic/vbscripts naming
-#
-#Version: 0.5 
-#Author: Fabrizio Pani
-#License: GPL v2
-#Dec. 2019
-
-##########################Logic of exit codes####################
-#0: success
-#1: general error code
-#2: usage error
-#5: permission denied
-#127: command not found
-#130: CTRL+C was invoked
-#
-################################################################
-########################Logic of global variables###############
-#we will use the below global vars
-#and reset them at each function call
-#the caller might optionally reset them
-#
-#set_val        : returned value from a function
-#a_set_val    : returned array of values set from a function
-#err	        	: contains the last error code
-#             		: ( 0 means the operation is successful )
-#err_msg      : contains the last error message
-###############################################################
-
-reset_global_vars(){
-
-	
-	 : 'BEGIN COMMENT
-	 """
-			Resets global variables
-			Args: N/A
-			Local vars: N/A
-			Global vars: a_set_val, set_val, err, err_msg
-			Exit codes: N/A
-	"""
-	END COMMENT'
-
-	a_set_val=()
-	set_val=""
-	err=0
-	err_msg=""
-
-}
-
 Len(){
 
 	 : 'BEGIN COMMENT
@@ -344,9 +294,7 @@ Join(){
 			  Global vars: set_val
 			  Exit codes:
 					  0: SUCCESS
-					  1: FAILURE
 					  2: FAILURE (WRONG USAGE)
-				  127: FAILURE (COMMAND NOT FOUND)
 	"""
 	COMMENT'
 
@@ -379,3 +327,145 @@ Join(){
 	return $err
 	
 }
+
+
+
+Ucase(){
+
+
+
+	: 'BEGIN COMMENT
+	"""
+			  Makes a string uppercase
+			  Args: string
+			  Local vars.: str
+			  Global vars: set_val
+			  Exit codes:
+					  0: SUCCESS
+					  1: GENERIC FAILURE
+					  127: COMMAND NOT FOUND
+	"""
+	COMMENT'
+
+
+	reset_global_vars
+	
+	
+	str=${1}
+	
+	
+	command -v tr >/dev/null 2>&1
+	if [[ $? -eq 0 ]]; then
+		set_val=$(echo "${1}"|tr '[:lower:]'  '[:upper:]' )
+		if [[ $? -ne 0 ]];then
+			err=$?
+			err_msg="Ucase - an error has occured"
+		fi
+	else
+		err_msg="tr - command not found"
+		err=127
+	fi	
+	
+	
+	return $err
+		
+
+}
+
+
+
+
+Lcase(){
+
+
+
+	: 'BEGIN COMMENT
+	"""
+			  Makes a string lowercase
+			  Args: string
+			  Local vars.: str
+			  Global vars: set_val
+			  Exit codes:
+					  0: SUCCESS
+					  1: GENERIC FAILURE
+					  127: COMMAND NOT FOUND
+	"""
+	COMMENT'
+
+
+	reset_global_vars
+	
+	
+	str=${1}
+	
+	
+	command -v tr >/dev/null 2>&1
+	if [[ $? -eq 0 ]]; then
+		set_val=$(echo "${1}"| tr '[:upper:]'  '[:lower:]'  )
+		if [[ $? -ne 0 ]];then
+			err=$?
+			err_msg="Lcase - an error has occured"
+		fi
+	else
+		err_msg="tr - command not found"
+		err=127
+	fi	
+	
+	
+	return $err
+		
+
+}
+
+
+Capitalize(){
+
+
+
+	: 'BEGIN COMMENT
+	"""
+			  Makes only the first character of a string uppercase
+			  Args: string
+			  Local vars.: str,char,str_part
+			  Global vars: set_val
+			  Exit codes:
+					  0: SUCCESS
+					  1: GENERIC FAILURE
+					  127: COMMAND NOT FOUND
+	"""
+	COMMENT'
+
+
+	reset_global_vars
+	
+	
+	str=${1}
+	char=${str:0:1}
+	str_part=${str:1}
+	
+	
+	
+	command -v tr >/dev/null 2>&1
+	if [[ $? -eq 0 ]]; then
+		char=$(echo "${char}"| tr '[:lower:]'  '[:upper:]'  )
+		if [[ $? -ne 0 ]];then
+			err=$?
+			err_msg="Capitalize - an error has occured"
+		fi
+	else
+		err_msg="tr - command not found"
+		err=127
+	fi	
+	
+	set_val="${char}${str_part}"
+	
+	
+	return $err
+		
+
+}
+
+
+
+
+
