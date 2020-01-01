@@ -269,7 +269,7 @@ check_tcp_port(){
 		check_net_tools	
 		
 		if [[ $is_nc -eq 0 ]]; then
-			if ! nc -uvz "$host" "$port" 2>/dev/null; then
+			if ! nc -uvz "$host" "$port" >/dev/null 2>&1; then
 					err=1
 					err_msg="tcp port check failed"
 			else 
@@ -280,7 +280,7 @@ check_tcp_port(){
 		fi
 		
 		if [[ $is_ncat -eq 0 ]]; then
-			if ! ncat -uz "$host" "$port" 2>/dev/null; then 
+			if ! ncat -uv "$host" "$port"  </dev/null >/dev/null 2>&1; then 
 					err=1
 					err_msg="tcp port check failed"
 			else
@@ -334,13 +334,13 @@ check_udp_port(){
 		return $err
 	fi
 	if [[ $is_nc -eq 0 ]]; then
-		if ! nc -uvz "$host" "$port" 2>/dev/null; then
+		if ! nc -uvz "$host" "$port" >/dev/null 2>&1; then
 				err=1
 				err_msg="udp port check failed"
 		fi	
 		return $err	
 	fi
-	if ! ncat -uz "$host" "$port" 2>/dev/null; then 
+	if ! ncat -uv "$host" "$port" </dev/null >/dev/null 2>&1; then 
 				err=1
 				err_msg="udp port check failed"
 	fi		
