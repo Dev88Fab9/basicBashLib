@@ -1,5 +1,6 @@
 #!/bin/bash
 
+. ./main.sh
 
 is_valid_port(){
 
@@ -45,13 +46,12 @@ is_valid_ipv4(){
 	
 	local ip="${1}"
 		
-	if ! command -v grep >/dev/null 2>&1; then
+	if [[ ! $is_grep -ne 0 ]]; then
 	   err=127
 	   err_msg="grep command not found"
 	   return $err
 	fi   
-	
-	
+		
 	if ! echo "$ip" | grep -E '(([0-9]{1,3})\.){3}([0-9]{1,3}){1}'  | grep -vqE '25[6-9]|2[6-9][0-9]|[3-9][0-9][0-9]' ; then
 		err=1
 		err_msg="not a valid IPv4 address"
@@ -137,6 +137,18 @@ is_valid_host(){
 }
 
 check_net_tools(){
+
+
+			 : 'BEGIN COMMENT
+	 """
+			Check which network tools are installed
+			Args: N/A
+			Local vars: N/A
+			Global vars: is_dig,is_ip,is_nc,is_ncat,is_nslookup,is_telnet,is_ping,is_ss
+			Exit codes:
+			N/A
+	"""
+	END COMMENT'
 
 		is_nc=1
 		is_ncat=1
