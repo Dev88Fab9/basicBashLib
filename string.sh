@@ -345,37 +345,23 @@ Ucase(){
 			  Exit codes:
 					  0: SUCCESS
 					  1: GENERIC FAILURE
-					  127: COMMAND NOT FOUND
 	"""
 	COMMENT'
 
 
 	reset_global_vars
 	
-	
 	str=${1}
-	
-	
-	command -v tr >/dev/null 2>&1
-	if [[ $? -eq 0 ]]; then
-		set_val=$(echo "${1^^}")
-		if [[ $? -ne 0 ]];then
-			err=$?
-			err_msg="Ucase - an error has occured"
-		fi
-	else
-		err_msg="tr - command not found"
-		err=127
-	fi	
-	
+
+	set_val="${1^^}"
+	if [[ $? -ne 0 ]];then
+		err=$?
+		err_msg="Ucase - an error has occured"
+	fi
 	
 	return $err
-		
 
 }
-
-
-
 
 Lcase(){
 
@@ -423,51 +409,29 @@ Lcase(){
 Capitalize(){
 
 
-
 	: 'BEGIN COMMENT
 	"""
 			  Makes only the first character of a string uppercase
 			  Args: string
-			  Local vars.: str,char,str_part
+			  Local vars.: str
 			  Global vars: set_val
 			  Exit codes:
 					  0: SUCCESS
 					  1: GENERIC FAILURE
-					  127: COMMAND NOT FOUND
 	"""
 	COMMENT'
 
-
 	reset_global_vars
 	
-	
 	str=${1}
-	char=${str:0:1}
-	str_part=${str:1}
-	
-	
-	
-	command -v tr >/dev/null 2>&1
-	if [[ $? -eq 0 ]]; then
-		char=$(echo "${char}"| tr '[:lower:]'  '[:upper:]'  )
-		if [[ $? -ne 0 ]];then
-			err=$?
-			err_msg="Capitalize - an error has occured"
-		fi
-	else
-		err_msg="tr - command not found"
-		err=127
+		
+	set_val="${str^}"
+	if [[ $? -ne 0 ]];then
+		err=$?
+		err_msg="Capitalize - an error has occured"
 	fi	
-	
-	set_val="${char}${str_part}"
-	
 	
 	return $err
 		
 
 }
-
-
-
-
-
