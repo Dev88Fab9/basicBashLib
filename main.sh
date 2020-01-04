@@ -90,6 +90,7 @@ chk_tools(){
 	is_sed=1
 	is_awk=1
 	is_xargs=1
+	is_wc=1
 
 
 	if command -v grep >/dev/null 2>&1; then
