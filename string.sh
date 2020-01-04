@@ -356,7 +356,7 @@ Ucase(){
 	
 	command -v tr >/dev/null 2>&1
 	if [[ $? -eq 0 ]]; then
-		set_val=$(echo "${1}"|tr '[:lower:]'  '[:upper:]' )
+		set_val=$(echo "${1^^}")
 		if [[ $? -ne 0 ]];then
 			err=$?
 			err_msg="Ucase - an error has occured"
