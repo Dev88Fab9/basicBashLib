@@ -17,7 +17,6 @@ Len(){
 	"""
 	END COMMENT'
 
-
 	reset_global_vars
 
 	if [[ -z "${1+x}" ]];then
@@ -25,7 +24,7 @@ Len(){
 	  err_msg="Len: no input provided"
 	  return $err
 	fi
-	if ! command -v wc >/dev/null 2>&1; then
+	if [[ $is_wc -ne 0 ]]; then
 	   err_msg="Len - 'wc' : command not found"
 	   err=127
 	   return $err
@@ -376,7 +375,6 @@ Lcase(){
 			  Exit codes:
 					  0: SUCCESS
 					  1: GENERIC FAILURE
-					  127: COMMAND NOT FOUND
 	"""
 	COMMENT'
 
@@ -385,19 +383,14 @@ Lcase(){
 	
 	
 	str=${1}
-	
-	
-	command -v tr >/dev/null 2>&1
-	if [[ $? -eq 0 ]]; then
-		set_val=$(echo "${1}"| tr '[:upper:]'  '[:lower:]'  )
-		if [[ $? -ne 0 ]];then
-			err=$?
-			err_msg="Lcase - an error has occured"
-		fi
-	else
-		err_msg="tr - command not found"
-		err=127
-	fi	
+		
+
+	set_val="${1,,}"
+	if [[ $? -ne 0 ]];then
+		err=$?
+		err_msg="Lcase - an error has occured"
+	fi
+
 	
 	
 	return $err

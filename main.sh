@@ -80,7 +80,7 @@ chk_tools(){
 			and set relative global variable
 			Args: N/A, 
 			Local vars: N/A
-			Global vars: is_awk,is_grep,is_sed,is_tr,is_xargs
+			Global vars: is_awk,is_grep,is_sed,is_tr,is_xargs,is_wc
 			Exit codes: N/A
 	"""
 	END COMMENT'
@@ -107,6 +107,9 @@ chk_tools(){
 	fi
 	if command -v xargs >/dev/null 2>&1; then
 			is_xargs=0
+	fi
+	if command -v wc >/dev/null 2>&1; then
+			is_wc=0
 	fi
 	
 	
