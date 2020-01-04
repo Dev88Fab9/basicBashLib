@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. ./main.sh
+
 Len(){
 
 	 : 'BEGIN COMMENT
