@@ -7,7 +7,7 @@
 #Author: Fabrizio Pani
 #License: GPL v2
 #Dec. 2019
-
+set -x
 ##########################Logic of exit codes####################
 #0: success
 #1: general error code
@@ -114,3 +114,18 @@ chk_tools(){
 	
 	
 }
+
+
+
+#main
+#as principle we require the ancient version 2.
+
+get_bash_ver
+if [[ $major_ver -le 2 && $minor_ver -le 05 ]]; then
+	echo ""
+	echo -n "Your bash version $major_ver .$minor_ver.$fix_ver"
+	echo -n " is too old"
+	exit 99
+fi
+
+	
