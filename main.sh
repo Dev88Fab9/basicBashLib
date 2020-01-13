@@ -118,7 +118,7 @@ chk_tools(){
 
 
 #main
-#as principle we require the ancient version 2.
+#in principle we require the ancient version 2.
 
 get_bash_ver
 if [[ $major_ver -le 2 && $minor_ver -le 05 ]]; then
