@@ -216,11 +216,13 @@ check_tcp_port(){
 	local host=${1} 
 	local port=${2}
 	#file descriptor, values 0 1 2 are reserved
+	#so we start from the 3
 	local fd=3
 	#system max file descriptor
 	local max_fd=0
-	#loop variable
+	#loops variables
 	local ret=0
+	local i=0
 
 	if ! echo "$(uname) "| grep -iq Linux; then
 		err=99 
@@ -233,11 +235,10 @@ check_tcp_port(){
 		return $err
 	fi
 	#retrieving the maximum number of file descriptors
+	#normally we should use only descriptors 3-9
+	#but using from 3 to max file descriptors
 	max_fd=$(cat /proc/sys/fs/file-max 2>/dev/null)
 	if  [[ $? -ne 0 ]]; then
-	    #if we cannot determine the max number 
-		#of available file descriptors 
-		#we  set a value of 1024
 		max_fd=1024
 	fi
 	
@@ -265,44 +266,33 @@ check_tcp_port(){
 	done
 	
 	#checking the TCP port
+	
 	#u cannot normally pass a variable to exec,
 	#	u must pass a costant, hence using eval
-	if [[ $err -eq 0 ]]; then
+	eval 'exec '"$fd"'< "/dev/tcp/$host/$port"' 2>/dev/null
+	err=$?		
+
+	#if not successful we make other 3 attempts
+	while [[ $err -ne 0 ]]; do
+			#u cannot normally pass a variable to exec,
+			#	u must pass a costant, hence using eval
 		eval 'exec '"$fd"'< "/dev/tcp/$host/$port"' 2>/dev/null
 		err=$?
-		if  ls   ls /proc/$$/${fd}  2>/dev/null ; then
+		if [[ $err -ne 0 ]]; then
+				#we sleep a random number 0-7 seconds
+				sleep $(( RANDOM %7 ))
+				i=$(( i+1 ))
+				if [[ $i -ge 3 ]]; then
+					#only three attempts
+					break 3
+				fi	
+		fi
+	done
+		
+	#closing the file descriptor	
+	if  ls   ls /proc/$$/${fd}  2>/dev/null ; then
 			exec ${fd}>&-
-		fi	
 	fi
-	#in case of issues we try to use nc or ncat  if available
-	
-	if [[ $err -ne 0 ]]; then
-	
-		check_net_tools	
-		
-		if [[ $is_nc -eq 0 ]]; then
-			if ! nc -uvz "$host" "$port" >/dev/null 2>&1; then
-					err=1
-					err_msg="tcp port check failed"
-			else 
-					err=0
-					err_msg=""
-			fi	
-		return $err	
-		fi
-		
-		if [[ $is_ncat -eq 0 ]]; then
-			if ! ncat -uv "$host" "$port"  </dev/null >/dev/null 2>&1; then 
-					err=1
-					err_msg="tcp port check failed"
-			else
-					err=0
-					err_msg=""
-			fi		
-	
-		return $err
-		fi
-	fi	
 
 	return $err
 
@@ -339,6 +329,9 @@ check_udp_port(){
 	if [[ $? -ne 0 ]]; then
 		return $err
 	fi
+		
+	#we do not use the bash connect facility 
+	#as for udp always returns 0 (success)
 		
 	if [[ $is_nc -ne 0 && $is_ncat -ne 0 ]]; then
 		err=127
