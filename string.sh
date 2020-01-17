@@ -343,7 +343,7 @@ Ucase(){
 			  Global vars: set_val
 			  Exit codes:
 					  0: SUCCESS
-					  1: GENERIC FAILURE
+					  127: COMMAND NOT FOUND
 	"""
 	COMMENT'
 
@@ -352,10 +352,17 @@ Ucase(){
 	
 	str=${1}
 
-	set_val="${1^^}"
-	if [[ $? -ne 0 ]];then
-		err=$?
-		err_msg="Ucase - an error has occured"
+	if [[ $major_ver -ge 4 ]]; then
+		set_val="${1^^}"
+	else
+		#bash <4
+		#expansion character not supported
+		if [[ $is_tr -ne 0 ]]; then
+			err=127
+			err_msg="Ucase : tr - command not found"
+		else
+			set_val=$(echo "${str}"| tr '[:lower:]'  '[:upper:]'  )
+		fi	
 	fi
 	
 	return $err
@@ -384,17 +391,20 @@ Lcase(){
 	
 	str=${1}
 		
-
-	set_val="${1,,}"
-	if [[ $? -ne 0 ]];then
-		err=$?
-		err_msg="Lcase - an error has occured"
+	if [[ $major_ver -ge 4 ]]; then
+		set_val="${1,,}"
+	else
+		#bash <4
+		#expansion word character not supported
+	if [[ $is_tr -ne 0 ]]; then
+			err=127
+			err_msg="Lcase : tr - command not found"
+		else
+			set_val=$(echo "${str}"| tr '[:upper:]'  '[:lower:]'  )
+		fi	
 	fi
-
-	
 	
 	return $err
-		
 
 }
 
@@ -406,25 +416,34 @@ Capitalize(){
 	"""
 			  Makes only the first character of a string uppercase
 			  Args: string
-			  Local vars.: str
+			  Local vars.: str,char,str_part
 			  Global vars: set_val
 			  Exit codes:
 					  0: SUCCESS
-					  1: GENERIC FAILURE
+					  127: COMMAND NOT FOUND
 	"""
 	COMMENT'
 
 	reset_global_vars
-	
+
 	str=${1}
-		
-	set_val="${str^}"
-	if [[ $? -ne 0 ]];then
-		err=$?
-		err_msg="Capitalize - an error has occured"
-	fi	
+	
+	if [[ $major_ver -gt 4 ]]; then
+		set_val="${str^}"
+	else
+		#the above case-modifying word expansion
+		#is not supported in bash < 4.0
+		#in that case we use tr
+		if [[ $is_tr -eq 1 ]]; then
+			err=127
+			err_msg="Capitalize: tr - command not found."
+		else
+			char=${str:0:1}
+			str_part=${str:1}
+			char=$(echo "${char}"| tr '[:lower:]'  '[:upper:]'  )
+			set_val="${char}${str_part}"		
+			fi
+	fi
 	
 	return $err
-		
-
 }
