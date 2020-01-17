@@ -7,7 +7,7 @@
 #Author: Fabrizio Pani
 #License: GPL v2
 #Dec. 2019
-set -x
+#set -x
 ##########################Logic of exit codes####################
 #0: success
 #1: general error code
