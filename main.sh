@@ -213,7 +213,8 @@ f_unset_error(){
 : 'BEGIN COMMENT
          """
                        unset error traps 
-					   for instance when using awk or grep
+					   for instance when we do not want to
+						exit for a grep, sed or awk not found string
                         Args: N/A
                         Local vars: N/A
                         Global vars: ERR
