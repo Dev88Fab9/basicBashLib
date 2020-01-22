@@ -120,10 +120,31 @@ chk_tools(){
 	
 }
 
+f_check_root(){
+
+	: 'BEGIN COMMENT
+         """
+                        Check if root
+                        Args: N/A
+                        Local vars: N/A
+                        Global vars: set_val, err, err_msg 
+                        Exit codes: N/A
+        """
+        END COMMENT'
+
+	reset_global_vars
+	if [[ $(id -u) -ne 0 ]]; then
+		err_msg="Sorry, you need to be root for this."
+		err=5
+		return $err
+	fi
+		
+		}
+
 
 
 #main
-#in principle we require the ancient version 2.
+#in principle we require the ancient version 2 at least 
 
 get_bash_ver
 if [[ $major_ver -le 2 && $minor_ver -le 05 ]]; then
