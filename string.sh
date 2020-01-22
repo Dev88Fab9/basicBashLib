@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ "${BASH_SOURCE[0]}" -ef "$0" ]]; then
+	echo "This script is not meant to run standalone: it must be sourced"
+	exit
+fi
+
 . ./main.sh
 
 Len(){

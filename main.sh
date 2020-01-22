@@ -31,6 +31,11 @@
 #err_msg      : contains the last error message
 ###############################################################
 
+if [[ "${BASH_SOURCE[0]}" -ef "$0" ]];then
+	echo "This script cannot be run standalone, it must be sourced"
+	exit 
+fi
+
 reset_global_vars(){
 
 	
@@ -128,4 +133,4 @@ if [[ $major_ver -le 2 && $minor_ver -le 05 ]]; then
 	exit 99
 fi
 
-	
+
