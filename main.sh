@@ -140,6 +140,102 @@ f_check_root(){
 	fi
 		
 		}
+		
+f_err_handling(){
+
+	: 'BEGIN COMMENT
+         """
+                        Error trap function
+                        Args: $0, $LINENO, $?
+                        Local vars: ret
+                        Global vars: N/A
+                        Exit codes: N/A
+        """
+        END COMMENT'
+		
+		local ret
+		ret=${3}
+		
+		echo "Sorry, ${1:2} terminated with the error $ret at line ${2}"
+
+}
+
+f_exit_handling(){
+
+	: 'BEGIN COMMENT
+         """
+                        exit function
+                        Args: N/A
+                        Local vars: ret
+                        Global vars: N/A
+                        Exit codes: N/A
+        """
+        END COMMENT'
+		local ret
+		ret=${1}
+		
+		if [[ $ret -eq 0 ]]; then
+			echo "${0:2} terminated successfully."
+		fi	
+
+}
+
+
+
+
+
+f_set_error(){
+
+: 'BEGIN COMMENT
+         """
+                        Call an exit/trap function
+                        Args: N/A
+                        Local vars: N/A
+                        Global vars: ERR
+                        Exit codes: N/A
+        """
+        END COMMENT'
+		
+set -o pipefail  # trace ERR through pipes
+set -o errtrace  # trace ERR through 'time command' and other functions
+set -o nounset   ## set -u : exit the script if you try to use an uninitialised variable
+set -o errexit   ## set -e : exit the script if any statement returns a non-true return value
+
+
+trap 'f_err_handling  $0 ${LINENO} $?' ERR 
+trap 'f_exit_handling $?' EXIT
+
+
+}
+
+f_unset_error(){
+
+: 'BEGIN COMMENT
+         """
+                       unset error traps 
+					   for instance when using awk or grep
+                        Args: N/A
+                        Local vars: N/A
+                        Global vars: ERR
+                        Exit codes: N/A
+        """
+        END COMMENT'
+
+set +o pipefail  # do not trace ERR through pipes
+set +o errtrace  # do not trace ERR through 'time command' and other functions
+set +o errexit   ## set +e : do not exit the script if any statement returns a non-true return value
+
+
+trap - ERR 
+
+
+
+}
+
+
+
+
+
 
 
 
