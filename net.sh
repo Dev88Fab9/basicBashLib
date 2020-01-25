@@ -258,15 +258,10 @@ check_tcp_port(){
 	 fi
 
 	#find a free available descriptor
-	while [ $ret -eq 0 ]; do
-	    ls /proc/$$/${fd} >/dev/null 2>&1
-	    ret=$?
-		if [[ $ret -eq 0 ]]; then
-			#file descriptor is in use, let's try the next 
-			fd=$(( fd+1 ))
-		fi
+	while test -t ${fd}; do
+		fd=$(( fd+1 ))
 		if [[ $fd -ge $max_fd ]]; then
-		   err=100
+			err=100
 		   err_msg="check_tcp_port: fatal. No file descriptors available"
 		fi
 	done
