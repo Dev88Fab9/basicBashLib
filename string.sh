@@ -7,6 +7,7 @@ fi
 
 . ./main.sh
 
+
 Len(){
 
      : 'BEGIN COMMENT
@@ -23,7 +24,8 @@ Len(){
     END COMMENT'
 
     reset_global_vars
-
+    chk_tools
+    
     if [[ -z "${1+x}" ]];then
       err=2
       err_msg="Len: no input provided"
@@ -239,6 +241,8 @@ Split(){
     COMMENT'
 
     reset_global_vars
+    chk_tools
+    
     if [[ -z "${1+x}" ]];then
         err=2
         err_msg="Split: no string provided"
@@ -254,7 +258,7 @@ Split(){
 
     #we will use grep instead of the bash =~ operator
     #for portability and consistency
-    if ! command -v grep >/dev/null 2>&1; then
+    if [[ $is_grep -ne 0 ]]; then
         err_msg="Fatal: grep not found"
         err=127
         return $err
@@ -354,6 +358,7 @@ Ucase(){
 
 
     reset_global_vars
+    chk_tools
     
     str=${1}
 
@@ -392,7 +397,7 @@ Lcase(){
 
 
     reset_global_vars
-    
+    chk_tools
     
     str=${1}
         
@@ -430,7 +435,7 @@ Capitalize(){
     COMMENT'
 
     reset_global_vars
-
+	chk_tools
     str=${1}
     
     if [[ $major_ver -gt 4 ]]; then
