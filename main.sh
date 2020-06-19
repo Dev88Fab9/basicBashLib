@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#Library containing common string functions 
+#Library containing common string functions
 #mimicking basic/vbscripts naming
 #
 #Version: 0.2
@@ -33,12 +33,12 @@
 
 if [[ "${BASH_SOURCE[0]}" -ef "$0" ]];then
     echo "This script cannot be run standalone, it must be sourced"
-    exit 
+    exit
 fi
 
 reset_global_vars(){
 
-    
+
      : 'BEGIN COMMENT
      """
         Resets global variables
@@ -62,14 +62,14 @@ get_bash_ver(){
      : 'BEGIN COMMENT
      """
         retrieves bash major, minor and release version
-        Args: N/A, 
+        Args: N/A,
         Local vars: N/A
         Global vars: major_ver, minor_ver,fix_ver
         Exit codes: N/A
     """
     END COMMENT'
-    
-    
+
+
     major_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk  '{print $2}'|awk -F"." '{print $1}')
     minor_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk  '{print $2}'|awk -F"." '{print $2}')
     fix_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk  '{print $2}'|awk -F"." '{print $3}'|awk -F"-"  '{print $1}')
@@ -83,7 +83,7 @@ chk_tools(){
     """
         check if essentials tools are in the system
         and set relative global variable
-        Args: N/A, 
+        Args: N/A,
         Local vars: N/A
         Global vars: is_awk,is_grep,is_sed,is_tr,is_xargs,is_wc
         Exit codes: N/A
@@ -116,7 +116,7 @@ chk_tools(){
     if command -v wc >/dev/null 2>&1; then
             is_wc=0
     fi
-   
+
 }
 
 f_check_root(){
@@ -126,7 +126,7 @@ f_check_root(){
             Check if root
             Args: N/A
             Local vars: N/A
-            Global vars: set_val, err, err_msg 
+            Global vars: set_val, err, err_msg
             Exit codes: N/A
         """
         END COMMENT'
@@ -137,9 +137,9 @@ f_check_root(){
         err=5
         return $err
     fi
-        
+
         }
-        
+
 f_err_handling(){
 
     : 'BEGIN COMMENT
@@ -170,13 +170,13 @@ f_exit_handling(){
         Exit codes: N/A
     """
     END COMMENT'
-    
+
     local ret
     ret=${1}
 
     if [[ $ret -eq 0 ]]; then
         echo "${0:2} terminated successfully."
-    fi  
+    fi
 
 }
 
@@ -202,7 +202,7 @@ f_set_error(){
     set -o errexit   ## set -e : exit the script if any statement returns a non-true return value
 
 
-    trap 'f_err_handling  $0 ${LINENO} $?' ERR 
+    trap 'f_err_handling  $0 ${LINENO} $?' ERR
     trap 'f_exit_handling $?' EXIT
 
 
@@ -212,7 +212,7 @@ f_unset_error(){
 
     : 'BEGIN COMMENT
     """
-        unset error traps 
+        unset error traps
         for instance when we do not want to
         exit for a grep, sed or awk not found string
         Args: N/A
@@ -226,28 +226,42 @@ f_unset_error(){
     set +o errtrace  # do not trace ERR through 'time command' and other functions
     set +o errexit   ## set +e : do not exit the script if any statement returns a non-true return value
 
-trap - ERR 
+trap - ERR
 
 
 
 }
 
 
+f_old_unsupported(){
 
+	: 'BEGIN COMMENT
+	"""
+	  set this error message and exit
 
+	  Args: N/A
+	  Local vars: N/A
+	  Global vars: N/A
+	  Exit codes: N/A
+	"""
+	END COMMENT'
 
+	echo ""
+	echo -n "Your bash version $major_ver .$minor_ver.$fix_ver"
+	echo -n " is too old"
 
+}
 
 
 #main
-#in principle we require the ancient version 2 at least 
-
+# in principle we require the old version 2.04 at least
+# as from that version '/dev/tcp/host/port' and ''/dev/udp/host/port' are
+# recognized
 get_bash_ver
-if [[ $major_ver -le 2 && $minor_ver -le 05 ]]; then
-    echo ""
-    echo -n "Your bash version $major_ver .$minor_ver.$fix_ver"
-    echo -n " is too old"
-    exit 99
+if [[ $major_ver -lt 2 ]]; then
+	f_old_unsupported
+	exit 99
+elif [[ $major_ver -eq 2 && $minor_ver -lt "04" ]];then
+	f_old_unsupported
+	exit 99
 fi
-
-
