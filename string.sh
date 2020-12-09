@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/bash 
 if [[ "${BASH_SOURCE[0]}" -ef "$0" ]]; then
     echo "This script is not meant to run standalone: it must be sourced"
     exit
@@ -435,7 +434,7 @@ Capitalize(){
     COMMENT'
 
     reset_global_vars
-	chk_tools
+    chk_tools
     str=${1}
     
     if [[ $major_ver -gt 4 ]]; then
@@ -457,3 +456,50 @@ Capitalize(){
     
     return $err
 }
+
+
+IsNumeric(){
+
+    : 'BEGIN COMMENT
+    """
+          Check if provided string is a number
+          Args: string
+          Local vars.: str
+          Global vars: ret
+          Exit codes:
+                  0: SUCCESS
+                  1: FAILURE
+    """
+    COMMENT'
+
+    local str=""
+    reset_global_vars
+    str="${1}"
+    
+    OIFS=$IFS
+    while read  -r -n1 ch ; do
+    a_str+=("$ch")
+    done <<< "$str"
+    
+    for ch in ${a_str[*]}
+        do
+            #we also consider a decimal number
+            #so we skip comma and dot
+            [[ $ch == ','  ]] && continue
+            [[ $ch == '.'  ]] && continue
+            
+            exec 4>&2  2>/dev/null 
+            if [ "$ch" -eq "$ch" ]; then
+                ret=0
+            else
+                ret=1
+                break
+            fi
+        done        
+     
+        exec 2>&4  4>&- 2>&1
+    
+        return $ret
+                
+    }           
+    
