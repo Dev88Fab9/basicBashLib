@@ -36,9 +36,8 @@ if [[ "${BASH_SOURCE[0]}" -ef "$0" ]];then
     exit
 fi
 
+
 reset_global_vars(){
-
-
      : 'BEGIN COMMENT
      """
         Resets global variables
@@ -53,12 +52,10 @@ reset_global_vars(){
     set_val=""
     err=0
     err_msg=""
-
 }
 
+
 get_bash_ver(){
-
-
      : 'BEGIN COMMENT
      """
         retrieves bash major, minor and release version
@@ -70,15 +67,17 @@ get_bash_ver(){
     END COMMENT'
 
 
-    major_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk  '{print $2}'|awk -F"." '{print $1}')
-    minor_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk  '{print $2}'|awk -F"." '{print $2}')
-    fix_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk  '{print $2}'|awk -F"." '{print $3}'|awk -F"-"  '{print $1}')
+    major_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk '{print $2}'\
+	|awk -F"." '{print $1}')
+    minor_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk '{print $2}'\
+	|awk -F"." '{print $2}')
+    fix_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk '{print $2}'\
+	|awk -F"." '{print $3}'|awk -F"-"  '{print $1}')
 
 }
 
 
 chk_tools(){
-
     : 'BEGIN COMMENT
     """
         check if essentials tools are in the system
@@ -116,11 +115,10 @@ chk_tools(){
     if command -v wc >/dev/null 2>&1; then
             is_wc=0
     fi
-
 }
 
-f_check_root(){
 
+f_check_root(){
     : 'BEGIN COMMENT
          """
             Check if root
@@ -138,10 +136,10 @@ f_check_root(){
         return $err
     fi
 
-        }
+    }
+	
 
 f_err_handling(){
-
     : 'BEGIN COMMENT
     """
         Error trap function
@@ -156,11 +154,10 @@ f_err_handling(){
     ret=${3}
 
     echo "Sorry, ${1:2} terminated with the error $ret at line ${2}"
-
 }
 
-f_exit_handling(){
 
+f_exit_handling(){
     : 'BEGIN COMMENT
     """
         exit function
@@ -181,11 +178,7 @@ f_exit_handling(){
 }
 
 
-
-
-
 f_set_error(){
-
     : 'BEGIN COMMENT
     """
         Call an exit/trap function
@@ -196,17 +189,17 @@ f_set_error(){
     """
     END COMMENT'
 
-    set -o pipefail  # trace ERR through pipes
-    set -o errtrace  # trace ERR through 'time command' and other functions
-    set -o nounset   ## set -u : exit the script if you try to use an uninitialised variable
-    set -o errexit   ## set -e : exit the script if any statement returns a non-true return value
+    set -o pipefail  #trace ERR through pipes
+    set -o errtrace  #trace ERR through 'time command' and other functions
+    set -o nounset   #set -u : exit the script on an uninitialised variable
+    #set -e : exit the script if any statement returns a non-true return value
+	set -o errexit   
 
 
     trap 'f_err_handling  $0 ${LINENO} $?' ERR
     trap 'f_exit_handling $?' EXIT
-
-
 }
+
 
 f_unset_error(){
 
@@ -222,14 +215,13 @@ f_unset_error(){
     """
     END COMMENT'
 
-    set +o pipefail  # do not trace ERR through pipes
-    set +o errtrace  # do not trace ERR through 'time command' and other functions
-    set +o errexit   ## set +e : do not exit the script if any statement returns a non-true return value
-
-trap - ERR
-
-
-
+    set +o pipefail  #do not trace ERR through pipes
+	# do not trace ERR through 'time command' and other functions
+    set +o errtrace  
+    set +o errexit   
+	#set +e : do not exit the script if any statement returns a non-true 
+	#return value
+	trap - ERR
 }
 
 
@@ -247,8 +239,7 @@ f_old_unsupported(){
 	END COMMENT'
 
 	echo ""
-	echo -n "Your bash version $major_ver .$minor_ver.$fix_ver"
-	echo -n " is too old"
+	echo -n "Your bash version $major_ver .$minor_ver.$fix_ver is too old"
 
 }
 

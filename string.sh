@@ -8,7 +8,6 @@ fi
 
 
 Len(){
-
      : 'BEGIN COMMENT
      """
             Returns the length of a passed string
@@ -56,7 +55,6 @@ Len(){
 }
 
 Trim(){
-
     : 'BEGIN COMMENT
     """
             Removes any whitespace at the end and at the beginning of a string
@@ -91,8 +89,8 @@ Trim(){
 
 }
 
-RTrim(){
 
+RTrim(){
     : 'BEGIN COMMENT
     """
         Removes any whitespace at the end of a string
@@ -130,7 +128,6 @@ RTrim(){
 
 
 LTrim(){
-
         : 'BEGIN COMMENT
          """
             Removes any whitespace at the beginning of a string
@@ -164,7 +161,7 @@ LTrim(){
   }
 
 
-  Mid(){
+Mid(){
 
     : 'BEGIN COMMENT
     """
@@ -222,8 +219,8 @@ LTrim(){
     
 }
 
-Split(){
 
+Split(){
     : 'BEGIN COMMENT
     """
           Returns an array from a delimited string
@@ -338,11 +335,7 @@ Join(){
 }
 
 
-
 Ucase(){
-
-
-
     : 'BEGIN COMMENT
     """
           Makes a string uppercase
@@ -378,10 +371,8 @@ Ucase(){
 
 }
 
+
 Lcase(){
-
-
-
     : 'BEGIN COMMENT
     """
           Makes a string lowercase
@@ -414,13 +405,10 @@ Lcase(){
     fi
     
     return $err
-
 }
 
 
 Capitalize(){
-
-
     : 'BEGIN COMMENT
     """
           Makes only the first character of a string uppercase
@@ -459,7 +447,6 @@ Capitalize(){
 
 
 IsNumeric(){
-
     : 'BEGIN COMMENT
     """
           Check if provided string is a number

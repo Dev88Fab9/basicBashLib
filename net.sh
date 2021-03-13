@@ -9,7 +9,6 @@ fi
 . ./main.sh
 
 is_valid_port(){
-
     : 'BEGIN COMMENT
     """
         Check if a valid TCP/UDP port
@@ -34,8 +33,8 @@ is_valid_port(){
     return $err
 }
 
-is_valid_ipv4(){
 
+is_valid_ipv4(){
     : 'BEGIN COMMENT
     """
         Check if a valid IPv4 address
@@ -59,7 +58,8 @@ is_valid_ipv4(){
        return $err
     fi   
         
-    if ! echo "$ip" | grep -E '(([0-9]{1,3})\.){3}([0-9]{1,3}){1}'  | grep -vqE '25[6-9]|2[6-9][0-9]|[3-9][0-9][0-9]' ; then
+    if ! echo "$ip" | grep -E '(([0-9]{1,3})\.){3}([0-9]{1,3}){1}'  | \
+	grep -vqE '25[6-9]|2[6-9][0-9]|[3-9][0-9][0-9]' ; then
         err=1
         err_msg="not a valid IPv4 address"
     fi  
@@ -67,9 +67,8 @@ is_valid_ipv4(){
     return $err
 }
 
-is_valid_ipv6(){
 
-    
+is_valid_ipv6(){
     : 'BEGIN COMMENT
     """
         Check if a valid IPv6 address
@@ -88,14 +87,16 @@ is_valid_ipv6(){
     err_msg=""
 
     local ip="${1}"
-    str_REG="^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]\
-    {1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]\
-    {1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|\
-    ([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4})\
-    {1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}\
-    |::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]\
-    |(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9])\
-    {0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$"
+	str_REG="^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:)\
+	{1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}\
+	(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|\
+	([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}\
+	(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4})\
+    {1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%\
+	[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9])\
+	{0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]\
+	{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|\
+	(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$"
     
         
     get_bash_ver
@@ -121,9 +122,8 @@ is_valid_ipv6(){
     return $err
 }
 
-is_valid_host(){
 
-    
+is_valid_host(){
     : 'BEGIN COMMENT
     """
         Check if a valid host
@@ -146,13 +146,10 @@ is_valid_host(){
     fi  
     
     return $err
-
-
 }
 
+
 check_net_tools(){
-
-
      : 'BEGIN COMMENT
     """
         Check which network tools are installed
@@ -164,14 +161,14 @@ check_net_tools(){
     """
     END COMMENT'
 
-        is_nc=1
-        is_ncat=1
-        is_nslookup=1
-        is_dig=1
-        is_ip=1
-        is_telnet=1
-        is_ping=1
-        is_ss=1
+	is_nc=1
+	is_ncat=1
+	is_nslookup=1
+	is_dig=1
+	is_ip=1
+	is_telnet=1
+	is_ping=1
+	is_ss=1
 
     if command -v nslookup >/dev/null 2>&1; then
             is_nslookup=0
@@ -208,8 +205,8 @@ check_net_tools(){
     fi  
 }
 
+
 check_tcp_port(){
-    
     : 'BEGIN COMMENT
     """
         Check if a port is reachable
@@ -257,13 +254,13 @@ check_tcp_port(){
     fi
     
     is_valid_host "$host"
-     if [[ $? -ne 0 ]]; then
+    if [[ $? -ne 0 ]]; then
          return $err
-     fi
-     is_valid_port "$port"
-     if [[ $? -ne 0 ]]; then
-            return $err
-     fi
+    fi
+    is_valid_port "$port"
+    if [[ $? -ne 0 ]]; then
+           return $err
+    fi
 
     #find a free available descriptor
     while test -t ${fd}; do
@@ -277,7 +274,7 @@ check_tcp_port(){
     #checking the TCP port
     
     #u cannot normally pass a variable to exec,
-    #   u must pass a costant, hence using eval
+    #u must pass a costant, hence using eval
     eval 'exec '"$fd"'< "/dev/tcp/$host/$port"' 2>/dev/null
     err=$?      
 
@@ -309,7 +306,6 @@ check_tcp_port(){
 
 
 check_udp_port(){
-    
      : 'BEGIN COMMENT
      """
             Check if a UDP port is reachable
