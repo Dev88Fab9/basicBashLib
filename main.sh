@@ -68,11 +68,11 @@ get_bash_ver(){
 
 
     major_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk '{print $2}'\
-	|awk -F"." '{print $1}')
+    |awk -F"." '{print $1}')
     minor_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk '{print $2}'\
-	|awk -F"." '{print $2}')
+    |awk -F"." '{print $2}')
     fix_ver=$(bash --version|head -n1|awk -F"," '{print $2}'|awk '{print $2}'\
-	|awk -F"." '{print $3}'|awk -F"-"  '{print $1}')
+    |awk -F"." '{print $3}'|awk -F"-"  '{print $1}')
 
 }
 
@@ -137,7 +137,7 @@ f_check_root(){
     fi
 
     }
-	
+    
 
 f_err_handling(){
     : 'BEGIN COMMENT
@@ -193,7 +193,7 @@ f_set_error(){
     set -o errtrace  #trace ERR through 'time command' and other functions
     set -o nounset   #set -u : exit the script on an uninitialised variable
     #set -e : exit the script if any statement returns a non-true return value
-	set -o errexit   
+    set -o errexit   
 
 
     trap 'f_err_handling  $0 ${LINENO} $?' ERR
@@ -216,30 +216,30 @@ f_unset_error(){
     END COMMENT'
 
     set +o pipefail  #do not trace ERR through pipes
-	# do not trace ERR through 'time command' and other functions
+    # do not trace ERR through 'time command' and other functions
     set +o errtrace  
     set +o errexit   
-	#set +e : do not exit the script if any statement returns a non-true 
-	#return value
-	trap - ERR
+    #set +e : do not exit the script if any statement returns a non-true 
+    #return value
+    trap - ERR
 }
 
 
 f_old_unsupported(){
 
-	: 'BEGIN COMMENT
-	"""
-	  set this error message and exit
+    : 'BEGIN COMMENT
+    """
+      set this error message and exit
 
-	  Args: N/A
-	  Local vars: N/A
-	  Global vars: N/A
-	  Exit codes: N/A
-	"""
-	END COMMENT'
+      Args: N/A
+      Local vars: N/A
+      Global vars: N/A
+      Exit codes: N/A
+    """
+    END COMMENT'
 
-	echo ""
-	echo -n "Your bash version $major_ver .$minor_ver.$fix_ver is too old"
+    echo ""
+    echo -n "Your bash version $major_ver .$minor_ver.$fix_ver is too old"
 
 }
 
@@ -250,9 +250,9 @@ f_old_unsupported(){
 # recognized
 get_bash_ver
 if [[ $major_ver -lt 2 ]]; then
-	f_old_unsupported
-	exit 99
+    f_old_unsupported
+    exit 99
 elif [[ $major_ver -eq 2 && $minor_ver -lt "04" ]];then
-	f_old_unsupported
-	exit 99
+    f_old_unsupported
+    exit 99
 fi

@@ -18,7 +18,7 @@ is_valid_port(){
         Exit codes:
         0: SUCCESS
         1: GENERIC FAILURE
-		127: COMMAND NOT FOUND
+        127: COMMAND NOT FOUND
     """
     END COMMENT'
     
@@ -45,7 +45,7 @@ is_valid_ipv4(){
         Exit codes:
         0: SUCCESS
         1: GENERIC FAILURE
-		127: COMMAND NOT FOUND
+        127: COMMAND NOT FOUND
     """
     END COMMENT'
 
@@ -61,7 +61,7 @@ is_valid_ipv4(){
     fi   
         
     if ! echo "$ip" | grep -E '(([0-9]{1,3})\.){3}([0-9]{1,3}){1}'  | \
-	grep -vqE '25[6-9]|2[6-9][0-9]|[3-9][0-9][0-9]' ; then
+    grep -vqE '25[6-9]|2[6-9][0-9]|[3-9][0-9][0-9]' ; then
         err=1
         err_msg="not a valid IPv4 address"
     fi  
@@ -80,7 +80,7 @@ is_valid_ipv6(){
         Exit codes:
         0: SUCCESS
         1: GENERIC FAILURE
-		99: UNSUPPORTED SYSTEM/CONFIG
+        99: UNSUPPORTED SYSTEM/CONFIG
     """
     END COMMENT'
     
@@ -90,16 +90,16 @@ is_valid_ipv6(){
     err_msg=""
 
     local ip="${1}"
-	str_REG="^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:)\
-	{1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}\
-	(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|\
-	([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}\
-	(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4})\
+    str_REG="^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:)\
+    {1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}\
+    (:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|\
+    ([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}\
+    (:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4})\
     {1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%\
-	[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9])\
-	{0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]\
-	{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|\
-	(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$"
+    [0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9])\
+    {0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]\
+    {1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|\
+    (2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$"
     
         
     get_bash_ver
@@ -164,14 +164,14 @@ check_net_tools(){
     """
     END COMMENT'
 
-	is_nc=1
-	is_ncat=1
-	is_nslookup=1
-	is_dig=1
-	is_ip=1
-	is_telnet=1
-	is_ping=1
-	is_ss=1
+    is_nc=1
+    is_ncat=1
+    is_nslookup=1
+    is_dig=1
+    is_ip=1
+    is_telnet=1
+    is_ping=1
+    is_ss=1
 
     if command -v nslookup >/dev/null 2>&1; then
             is_nslookup=0
@@ -311,15 +311,15 @@ check_tcp_port(){
 check_udp_port(){
      : 'BEGIN COMMENT
      """
-		Check if a UDP port is reachable
-		Args: host, port
-		Local vars: host, port
-		Global vars: err, err_msg
-		Exit codes:
-			0: SUCCESS
-			1: GENERIC FAILURE
-			2: FAILURE (WRONG USAGE)
-			127: FAILURE (COMMAND NOT FOUND )
+        Check if a UDP port is reachable
+        Args: host, port
+        Local vars: host, port
+        Global vars: err, err_msg
+        Exit codes:
+            0: SUCCESS
+            1: GENERIC FAILURE
+            2: FAILURE (WRONG USAGE)
+            127: FAILURE (COMMAND NOT FOUND )
     """
     END COMMENT'
 

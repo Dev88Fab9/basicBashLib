@@ -10,14 +10,14 @@ fi
 Len(){
      : 'BEGIN COMMENT
      """
-            Returns the length of a passed string
-            Args: one string
-            Local vars: str
-            Global vars: set_val, err, err_msg
-            Exit codes:
-                0: SUCCESS
-                1: GENERIC FAILURE
-                2: FAILURE (wrong usage)
+        Returns the length of a passed string
+        Args: one string
+        Local vars: str
+        Global vars: set_val, err, err_msg
+        Exit codes:
+            0: SUCCESS
+            1: GENERIC FAILURE
+            2: FAILURE (wrong usage)
     """
     END COMMENT'
 
@@ -57,14 +57,14 @@ Len(){
 Trim(){
     : 'BEGIN COMMENT
     """
-            Removes any whitespace at the end and at the beginning of a string
-            Args: one string
-            Local vars: str
-            Global vars: set_val,err,err_msg
-            Exit codes:
-                    0: SUCCESS
-                    1: GENERIC FAILURE
-                    2: FAILURE (wrong usage)
+        Removes any whitespace at the end and at the beginning of a string
+        Args: one string
+        Local vars: str
+        Global vars: set_val,err,err_msg
+        Exit codes:
+                0: SUCCESS
+                1: GENERIC FAILURE
+                2: FAILURE (wrong usage)
     """
     END COMMENT'
     
@@ -128,35 +128,35 @@ RTrim(){
 
 
 LTrim(){
-        : 'BEGIN COMMENT
-         """
-            Removes any whitespace at the beginning of a string
-            Argument: one string
-            Local var.: str
-            Global var.: set_val,err,err_msg
-            Exit codes:
-                    0: SUCCESS
-                    1: GENERIC FAILURE
-                    2: FAILURE (wrong usage)
-        """
-        COMMENT'
-        
-        reset_global_vars
-        
-        if [[ -z "${1+x}" ]];then
-          err=2
-          err_msg="LTrim: no input provided"
-          return $err
-        fi
-        local str="${1}"
-        
+    : 'BEGIN COMMENT
+     """
+        Removes any whitespace at the beginning of a string
+        Argument: one string
+        Local var.: str
+        Global var.: set_val,err,err_msg
+        Exit codes:
+                0: SUCCESS
+                1: GENERIC FAILURE
+                2: FAILURE (wrong usage)
+    """
+    COMMENT'
+    
+    reset_global_vars
+    
+    if [[ -z "${1+x}" ]];then
+      err=2
+      err_msg="LTrim: no input provided"
+      return $err
+    fi
+    local str="${1}"
+    
 
-        set_val="${str##*()}"
-        if [[ $? -ne 0 ]]; then
-          err_msg="LTrim: an error has occurred"
-          err=1
-        fi
-        return $err
+    set_val="${str##*()}"
+    if [[ $? -ne 0 ]]; then
+      err_msg="LTrim: an error has occurred"
+      err=1
+    fi
+    return $err
 
   }
 
@@ -165,14 +165,14 @@ Mid(){
 
     : 'BEGIN COMMENT
     """
-          Returns a substring from a string
-          Args: string,start,[length]
-          Local vars: str
-          Global vars: mid_str
-          Exit codes:
-                  0: SUCCESS
-                  1: GENERIC FAILURE
-                  2: FAILURE (WRONG USAGE)
+        Returns a substring from a string
+        Args: string,start,[length]
+        Local vars: str
+        Global vars: mid_str
+        Exit codes:
+              0: SUCCESS
+              1: GENERIC FAILURE
+              2: FAILURE (WRONG USAGE)
     """
     COMMENT'
 
@@ -223,16 +223,16 @@ Mid(){
 Split(){
     : 'BEGIN COMMENT
     """
-          Returns an array from a delimited string
-          The default delimiter is the space
-          Args: str, [delim]
-          Local vars: str, delim
-          Global vars: set_val
-          Exit codes:
-                  0: SUCCESS
-                  1: GENERIC FAILURE
-                  2: FAILURE (WRONG USAGE)
-              127: FAILURE (COMMAND NOT FOUND)
+    Returns an array from a delimited string
+    The default delimiter is the space
+    Args: str, [delim]
+    Local vars: str, delim
+    Global vars: set_val
+    Exit codes:
+          0: SUCCESS
+          1: GENERIC FAILURE
+          2: FAILURE (WRONG USAGE)
+        127: FAILURE (COMMAND NOT FOUND)
     """
     COMMENT'
 
@@ -294,13 +294,13 @@ Join(){
 
     : 'BEGIN COMMENT
     """
-          Returns a string from an array
-          Args: array, [delim]
-          Local vars.: array, delim
-          Global vars: set_val
-          Exit codes:
-                  0: SUCCESS
-                  2: FAILURE (WRONG USAGE)
+        Returns a string from an array
+        Args: array, [delim]
+        Local vars.: array, delim
+        Global vars: set_val
+        Exit codes:
+              0: SUCCESS
+              2: FAILURE (WRONG USAGE)
     """
     COMMENT'
 
@@ -338,13 +338,13 @@ Join(){
 Ucase(){
     : 'BEGIN COMMENT
     """
-          Makes a string uppercase
-          Args: string
-          Local vars.: str
-          Global vars: set_val
-          Exit codes:
-                  0: SUCCESS
-                  127: COMMAND NOT FOUND
+        Makes a string uppercase
+        Args: string
+        Local vars.: str
+        Global vars: set_val
+        Exit codes:
+                0: SUCCESS
+              127: COMMAND NOT FOUND
     """
     COMMENT'
 
@@ -375,13 +375,13 @@ Ucase(){
 Lcase(){
     : 'BEGIN COMMENT
     """
-          Makes a string lowercase
-          Args: string
-          Local vars.: str
-          Global vars: set_val
-          Exit codes:
-                  0: SUCCESS
-                  1: GENERIC FAILURE
+        Makes a string lowercase
+        Args: string
+        Local vars.: str
+        Global vars: set_val
+        Exit codes:
+            0: SUCCESS
+            1: GENERIC FAILURE
     """
     COMMENT'
 
@@ -411,13 +411,13 @@ Lcase(){
 Capitalize(){
     : 'BEGIN COMMENT
     """
-          Makes only the first character of a string uppercase
-          Args: string
-          Local vars.: str,char,str_part
-          Global vars: set_val
-          Exit codes:
-                  0: SUCCESS
-                  127: COMMAND NOT FOUND
+        Makes only the first character of a string uppercase
+        Args: string
+        Local vars.: str,char,str_part
+        Global vars: set_val
+        Exit codes:
+            0: SUCCESS
+          127: COMMAND NOT FOUND
     """
     COMMENT'
 
@@ -449,13 +449,13 @@ Capitalize(){
 IsNumeric(){
     : 'BEGIN COMMENT
     """
-          Check if provided string is a number
-          Args: string
-          Local vars.: str
-          Global vars: ret
-          Exit codes:
-                  0: SUCCESS
-                  1: FAILURE
+        Check if provided string is a number
+        Args: string
+        Local vars.: str
+        Global vars: ret
+        Exit codes:
+                 0: SUCCESS
+                 1: FAILURE
     """
     COMMENT'
 
