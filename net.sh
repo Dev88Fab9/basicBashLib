@@ -18,6 +18,7 @@ is_valid_port(){
         Exit codes:
         0: SUCCESS
         1: GENERIC FAILURE
+		127: COMMAND NOT FOUND
     """
     END COMMENT'
     
@@ -44,6 +45,7 @@ is_valid_ipv4(){
         Exit codes:
         0: SUCCESS
         1: GENERIC FAILURE
+		127: COMMAND NOT FOUND
     """
     END COMMENT'
 
@@ -78,6 +80,7 @@ is_valid_ipv6(){
         Exit codes:
         0: SUCCESS
         1: GENERIC FAILURE
+		99: UNSUPPORTED SYSTEM/CONFIG
     """
     END COMMENT'
     
@@ -217,7 +220,7 @@ check_tcp_port(){
         0: SUCCESS
         1: GENERIC FAILURE
         2: FAILURE (wrong usage)
-        99:FAILURE (UNSUPPORTED SYSTEM)
+        99: FAILURE (UNSUPPORTED SYSTEM)
         100: FAILURE (SYSTEM ISSUE)
     """
     END COMMENT'
@@ -308,15 +311,15 @@ check_tcp_port(){
 check_udp_port(){
      : 'BEGIN COMMENT
      """
-            Check if a UDP port is reachable
-            Args: host, port
-            Local vars: host, port
-            Global vars: err, err_msg
-            Exit codes:
-                0: SUCCESS
-                1: GENERIC FAILURE
-                2: FAILURE (wrong usage)
-                127:FAILURE (COMMAND NOT FOUND )
+		Check if a UDP port is reachable
+		Args: host, port
+		Local vars: host, port
+		Global vars: err, err_msg
+		Exit codes:
+			0: SUCCESS
+			1: GENERIC FAILURE
+			2: FAILURE (WRONG USAGE)
+			127: FAILURE (COMMAND NOT FOUND )
     """
     END COMMENT'
 

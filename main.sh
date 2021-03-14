@@ -9,14 +9,14 @@
 #Dec. 2019
 #set -x
 ##########################Logic of exit codes####################
-#0:     success
-#1:     general error code
-#2:     usage error
-#5:     permission denied
-#99:    unsupported system
-#100:   system issue
-#127:   command not found
-#130:   CTRL+C was invoked
+#0:     SUCCESS
+#1:     GENERAL ERROR CODE
+#2:     USAGE ERROR
+#5:     PERMISSION DENIED
+#99:    UNSUPPORTED SYSTEM/CONFIG
+#100:   SYSTEM ISSUE
+#127:   COMMAND NOT FOUND
+#130:   CTRL+C WAS INVOKED
 #
 ################################################################
 ########################Logic of global variables###############
