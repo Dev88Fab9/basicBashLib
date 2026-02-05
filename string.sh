@@ -484,7 +484,7 @@ IsNumeric(){
             fi
         done        
      
-        exec 2>&4  4>&- 2>&1
+        exec 2>&4  4>&- 
     
         return $ret
                 
