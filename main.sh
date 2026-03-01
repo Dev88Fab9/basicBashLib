@@ -77,7 +77,7 @@ get_bash_ver(){
 }
 
 
-chk_tools(){
+f_chk_tools(){
     : 'BEGIN COMMENT
     """
         check if essentials tools are in the system

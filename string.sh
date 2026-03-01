@@ -22,7 +22,7 @@ Len(){
     END COMMENT'
 
     reset_global_vars
-    chk_tools
+    f_chk_tools
     
     if [[ -z "${1+x}" ]];then
       err=2
@@ -237,7 +237,7 @@ Split(){
     COMMENT'
 
     reset_global_vars
-    chk_tools
+    f_chk_tools
     
     if [[ -z "${1+x}" ]];then
         err=2
@@ -350,7 +350,7 @@ Ucase(){
 
 
     reset_global_vars
-    chk_tools
+    f_chk_tools
     
     str=${1}
 
@@ -387,7 +387,7 @@ Lcase(){
 
 
     reset_global_vars
-    chk_tools
+    f_chk_tools
     
     str=${1}
         
@@ -422,7 +422,7 @@ Capitalize(){
     COMMENT'
 
     reset_global_vars
-    chk_tools
+    f_chk_tools
     str=${1}
     
     if [[ $major_ver -gt 4 ]]; then
