@@ -89,32 +89,36 @@ chk_tools(){
     """
     END COMMENT'
 
-    is_grep=1
-    is_tr=1
-    is_sed=1
-    is_awk=1
-    is_xargs=1
-    is_wc=1
+    commands=(grep tr sed awk xargs wc)
+    for cmd in "${commands[@]}"; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            declare "is_${cmd}=1"
+            f_chk_busybox "$cmd"
+        else
+            declare "is_${cmd}=0"
+        fi
+    done
+}
 
 
-    if command -v grep >/dev/null 2>&1; then
-            is_grep=0
-    fi
-    if command -v tr >/dev/null 2>&1; then
-            is_tr=0
-    fi
-    if command -v sed >/dev/null 2>&1; then
-            is_sed=0
-    fi
-    if command -v awk >/dev/null 2>&1; then
-            is_awk=0
-    fi
-    if command -v xargs >/dev/null 2>&1; then
-            is_xargs=0
-    fi
-    if command -v wc >/dev/null 2>&1; then
-            is_wc=0
-    fi
+f_chk_busybox(){
+    : 'BEGIN COMMENT
+    """
+        further check with busybox. This is only needed for minimalistic systems
+        Args:$1,
+        Local vars: varname
+        Global vars: is_awk,is_grep,is_sed,is_tr,is_xargs,is_wc
+        Exit codes: N/A
+    """
+    END COMMENT'
+
+    local cmd="$1"
+    command -v busybox >/dev/null 2>&1 || return
+
+    if busybox $cmd --help >/dev/null 2>&1;then
+        declare "is_${cmd}=0"
+    fi      
+
 }
 
 
